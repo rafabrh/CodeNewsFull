@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/codenews
+    username: postgres
+    password: sua-senha
+    driver-class-name: org.postgresql.Driver  # adicione explicitamente
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: seuemail@gmail.com
+    password: senha-do-app
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+kafka:
+  bootstrap-servers: localhost:9092
+  consumer:
+    group-id: techpulse-group
+    auto-offset-reset: earliest
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.apache.kafka.common.serialization.StringSerializer
