@@ -20,32 +20,33 @@ public class NewsScraperService {
 
     public List<News> scrape() {
         List<News> scrapedNews = new ArrayList<>();
-
         try {
-            // Exemplo de scraping do site TechCrunch
-            Document doc = Jsoup.connect("https://techcrunch.com/").get();
+            Document doc = Jsoup.connect("https://canaltech.com.br/").get();
 
-            for (Element article : doc.select("div.post-block")) {
-                String title = article.select("h2.post-block__title a").text();
-                String url = article.select("h2.post-block__title a").attr("href");
-                String summary = article.select("div.post-block__content").text();
-                String source = "TechCrunch";
+            for (Element article : doc.select("article")) {
+                String title = article.select("h2").text();
+                String url = article.select("a").attr("href");
+                if (!url.startsWith("http")) {
+                    url = "https://canaltech.com.br" + url;
+                }
+                String summary = article.select("p").text();
+                String source = "Canaltech";
                 LocalDateTime now = LocalDateTime.now();
 
-                if (!title.isBlank() && !url.isBlank()) {
+                // Verifica duplicidade no banco
+                if (!title.isBlank() && !url.isBlank() && !newsRepository.existsByUrl(url)) {
                     News news = new News(title, summary, url, source, now);
                     scrapedNews.add(news);
                 }
 
-                if (scrapedNews.size() >= 10) break; // pega só as 10 primeiras
+                // Mesmo com limite de 10, não irá salvar duplicadas
+                if (scrapedNews.size() >= 10) break;
             }
-            // Pode repetir para outros sites similares...
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // Salva no banco e retorna as notícias
-        return newsRepository.saveAll(scrapedNews);
+        // Salva no banco somente se houver novas notícias
+        return scrapedNews.isEmpty() ? List.of() : newsRepository.saveAll(scrapedNews);
     }
 }

@@ -1,5 +1,6 @@
 package org.codenews.scheduler;
 
+import jakarta.annotation.PostConstruct;
 import org.codenews.model.News;
 import lombok.RequiredArgsConstructor;
 import org.codenews.scraper.NewsScraperService;
@@ -15,6 +16,11 @@ public class NewsletterScheduler {
 
     private final NewsScraperService newsScraperService;
     private final KafkaTemplate<String, String> kafkaTemplate;
+
+    @PostConstruct
+    public void testNow() {
+        generateNewsletter(); // executa já ao iniciar o app
+    }
 
     // Executa todo dia às 8h da manhã
     @Scheduled(cron = "0 0 8 * * ?")

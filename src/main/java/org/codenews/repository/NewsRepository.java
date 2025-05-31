@@ -10,4 +10,10 @@ import java.util.List;
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
     List<News> findTop10ByOrderByPublishDateDesc();
+
+    List<News> findAllByUrlIn(List<String> urls);
+
+    boolean existsByUrl(String url);
+
+
 }
