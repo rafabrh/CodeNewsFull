@@ -1,4 +1,6 @@
-CodeNews – Plataforma Inteligente de Newsletter Tech com Spring Boot 3, Apache Kafka, JSoup e Spring Mail
+- CodeNews –
+
+Plataforma Inteligente de Newsletter Tech com Spring Boot 3, Apache Kafka, JSoup e Spring Mail
 
 Uma solução completa para coleta, processamento e distribuição de notícias de tecnologia, que combina:
 
