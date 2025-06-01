@@ -1,36 +1,43 @@
 package org.codenews.scheduler;
 
-import jakarta.annotation.PostConstruct;
-import org.codenews.model.News;
 import lombok.RequiredArgsConstructor;
-import org.codenews.scraper.NewsScraperService;
-import org.springframework.kafka.core.KafkaTemplate;
+import lombok.extern.slf4j.Slf4j;
+import org.codenews.service.PipelineService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class NewsletterScheduler {
 
-    private final NewsScraperService newsScraperService;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final PipelineService pipelineService;
 
-    @PostConstruct
-    public void testNow() {
-        generateNewsletter(); // executa já ao iniciar o app
+    @Value("${scheduler.cron.daily}")
+    private String dailyCron;
+
+    /**
+     * Invocado quando a aplicação estiver totalmente “ready”:
+     * dispara o pipeline imediatamente.
+     */
+    @EventListener(ApplicationReadyEvent.class)
+    public void onApplicationReady() {
+        log.info("[SCHEDULER] Aplicação iniciada. Disparando pipeline imediatamente...");
+        pipelineService.runPipeline();
+        log.info("[SCHEDULER] Pipeline inicial executado.");
     }
 
-    // Executa todo dia às 8h da manhã
-    @Scheduled(cron = "0 0 8 * * ?")
-    public void generateNewsletter() {
-        List<News> newsList = newsScraperService.scrape();
-
-        // Envia título e url para o tópico Kafka
-        newsList.forEach(news -> {
-            String message = news.getTitle() + " - " + news.getUrl();
-            kafkaTemplate.send("codenews-news", message);
-        });
+    /**
+     * Invocado diariamente de acordo com o cron em application.yml
+     * (ex.: 0 0 8 * * * → 8h da manhã todos os dias).
+     */
+    @Scheduled(cron = "${scheduler.cron.daily}")
+    public void scheduledRun() {
+        log.info("[SCHEDULER] Horário agendado atingido (cron={}): executando pipeline...", dailyCron);
+        pipelineService.runPipeline();
+        log.info("[SCHEDULER] Pipeline agendado executado.");
     }
 }

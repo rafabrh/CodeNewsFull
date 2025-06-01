@@ -1,52 +1,52 @@
 package org.codenews.scraper;
 
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.codenews.model.News;
-import org.codenews.repository.NewsRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
-@RequiredArgsConstructor
 public class NewsScraperService {
 
-    private final NewsRepository newsRepository;
-
-    public List<News> scrape() {
-        List<News> scrapedNews = new ArrayList<>();
+    /**
+     * Raspa até `limit` notícias mais recentes do portal Canaltech.
+     */
+    public List<News> scrapeLatestNews(int limit) {
+        List<News> newsList = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://canaltech.com.br/").get();
-
-            for (Element article : doc.select("article")) {
-                String title = article.select("h2").text();
-                String url = article.select("a").attr("href");
+            Document doc = Jsoup.connect("https://canaltech.com.br/ultimas/").get();
+            for (Element card : doc.select(".card.card-article")) {
+                String title = card.select(".card-title").text();
+                String summary = card.select(".card-description").text();
+                String url = card.select("a").attr("href");
                 if (!url.startsWith("http")) {
                     url = "https://canaltech.com.br" + url;
                 }
-                String summary = article.select("p").text();
+                String imageUrl = card.select("img").attr("src");
                 String source = "Canaltech";
-                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime publishDate = LocalDateTime.now(); // data fictícia
 
-                // Verifica duplicidade no banco
-                if (!title.isBlank() && !url.isBlank() && !newsRepository.existsByUrl(url)) {
-                    News news = new News(title, summary, url, source, now);
-                    scrapedNews.add(news);
+                newsList.add(new News(title, summary, url, imageUrl, source, publishDate));
+                if (newsList.size() >= limit) {
+                    break;
                 }
-
-                // Mesmo com limite de 10, não irá salvar duplicadas
-                if (scrapedNews.size() >= 10) break;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("[NewsScraperService] Erro ao fazer scraping: {}", e.getMessage(), e);
         }
+        return newsList;
+    }
 
-        // Salva no banco somente se houver novas notícias
-        return scrapedNews.isEmpty() ? List.of() : newsRepository.saveAll(scrapedNews);
+    /**
+     * Versão sem parâmetros (compatibilidade) — usa 10 notícias por padrão.
+     */
+    public List<News> scrapeLatestNews() {
+        return scrapeLatestNews(10);
     }
 }

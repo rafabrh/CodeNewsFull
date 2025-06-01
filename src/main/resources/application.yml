@@ -20,23 +20,53 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: rafinhalvarenga@gmail.com
+    # coloque aqui a senha de app do Gmail (ou OAuth2) corretamente:
     password: nabj imtg sury vfcl
     properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
-      mail.debug: true
-      mail.smtp.debug: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: true
 
+  # --------------------------------------------------------------------------
+  #            AQUI COMEÇA O BLOCO ÚNICO spring.kafka
+  # --------------------------------------------------------------------------
   kafka:
     bootstrap-servers: localhost:9092
+
+    # Nome do tópico onde publicaremos as notícias
+    topic:
+      news: codenews-news
+
     consumer:
       group-id: codenews-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    properties:
+      spring:
+        json:
+          trusted:
+            packages: org.codenews.model
+          value:
+            default:
+              type: org.codenews.model.News
+
+    # Tamanho de lote para newsletter (batch):
     newsletter:
       batch:
-        size: 1
+        size: 10
+  # --------------------------------------------------------------------------
+  #            FIM DO BLOCO ÚNICO spring.kafka
+  # --------------------------------------------------------------------------
+
+scheduler:
+  cron:
+    daily: 0 0 8 * * *

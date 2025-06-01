@@ -3,11 +3,12 @@ package org.codenews.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "subscriber")
 public class Subscriber {
 
     @Id
@@ -16,4 +17,6 @@ public class Subscriber {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    private String name;
 }

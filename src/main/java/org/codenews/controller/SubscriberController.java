@@ -21,5 +21,12 @@ public class SubscriberController {
         repository.save(subscriber);
         return ResponseEntity.ok("Cadastro realizado com sucesso!");
     }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<?> deleteAllSubscribers() {
+        repository.deleteAll();
+        return ResponseEntity.noContent().build(); // HTTP 204
+    }
 }
+
 
