@@ -1,11 +1,9 @@
 package org.codenews.scheduler;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.codenews.service.PipelineService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,28 +14,25 @@ public class NewsletterScheduler {
 
     private final PipelineService pipelineService;
 
-    @Value("${scheduler.cron.daily}")
-    private String dailyCron;
-
     /**
-     * Invocado quando a aplicação estiver totalmente “ready”:
-     * dispara o pipeline imediatamente.
+     * Ao subir a aplicação, dispara o pipeline uma vez imediatamente
+     * (que vai apenas publicar no Kafka).
      */
-    @EventListener(ApplicationReadyEvent.class)
-    public void onApplicationReady() {
+    @PostConstruct
+    public void onStartup() {
         log.info("[SCHEDULER] Aplicação iniciada. Disparando pipeline imediatamente...");
         pipelineService.runPipeline();
         log.info("[SCHEDULER] Pipeline inicial executado.");
     }
 
     /**
-     * Invocado diariamente de acordo com o cron em application.yml
-     * (ex.: 0 0 8 * * * → 8h da manhã todos os dias).
+     * Agendamento diário: executa todo dia às 08:00:00.
+     * (Somente publica no Kafka; quem envia e-mail é o consumidor.)
      */
-    @Scheduled(cron = "${scheduler.cron.daily}")
-    public void scheduledRun() {
-        log.info("[SCHEDULER] Horário agendado atingido (cron={}): executando pipeline...", dailyCron);
+    @Scheduled(cron = "0 0 8 * * *", zone = "America/Sao_Paulo")
+    public void scheduleDaily() {
+        log.info("[SCHEDULER] Disparando pipeline agendado...");
         pipelineService.runPipeline();
-        log.info("[SCHEDULER] Pipeline agendado executado.");
+        log.info("[SCHEDULER] Pipeline agendado finalizado.");
     }
 }

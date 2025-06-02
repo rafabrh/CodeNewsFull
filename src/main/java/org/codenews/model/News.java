@@ -19,7 +19,7 @@ public class News {
 
     private String title;
 
-    @Column(length = 1024)
+    @Column(columnDefinition = "TEXT")
     private String summary;
 
     @Column(unique = true, nullable = false)

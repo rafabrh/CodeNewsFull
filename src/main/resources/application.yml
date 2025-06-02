@@ -20,7 +20,6 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: rafinhalvarenga@gmail.com
-    # coloque aqui a senha de app do Gmail (ou OAuth2) corretamente:
     password: nabj imtg sury vfcl
     properties:
       mail:
@@ -29,14 +28,8 @@ spring:
           starttls:
             enable: true
         debug: true
-
-  # --------------------------------------------------------------------------
-  #            AQUI COMEÇA O BLOCO ÚNICO spring.kafka
-  # --------------------------------------------------------------------------
   kafka:
     bootstrap-servers: localhost:9092
-
-    # Nome do tópico onde publicaremos as notícias
     topic:
       news: codenews-news
 
@@ -63,10 +56,6 @@ spring:
     newsletter:
       batch:
         size: 10
-  # --------------------------------------------------------------------------
-  #            FIM DO BLOCO ÚNICO spring.kafka
-  # --------------------------------------------------------------------------
-
 scheduler:
   cron:
     daily: 0 0 8 * * *
