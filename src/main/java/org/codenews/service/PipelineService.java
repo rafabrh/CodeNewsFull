@@ -1,3 +1,4 @@
+// src/main/java/org/codenews/service/PipelineService.java
 package org.codenews.service;
 
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ public class PipelineService {
     private final NewsProducerService newsProducerService;
 
     /**
-     * Dispara todo o pipeline diário (scraper → persistência condicional → Kafka).
+     * Executa o pipeline inteiro: scraping → persistência condicional → publicação Kafka → marker FLUSH.
      */
     public void runPipeline() {
         log.info("[PIPELINE] Iniciando execução do pipeline...");

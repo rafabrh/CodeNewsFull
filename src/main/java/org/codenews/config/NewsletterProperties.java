@@ -1,23 +1,16 @@
+// src/main/java/org/codenews/config/NewsletterProperties.java
 package org.codenews.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-/**
- * Faz o binding de:
- *   spring.kafka.newsletter.batch.size
- * dentro de application.yml.
- */
-
 @Component
 @ConfigurationProperties(prefix = "spring.kafka.newsletter.batch")
 public class NewsletterProperties {
 
-/**
-     * Vai mapear o valor de
-     *   spring.kafka.newsletter.batch.size: 10
+    /**
+     * Tamanho do lote de notícias antes de disparar a newsletter.
      */
-
     private int size;
 
     public int getSize() {

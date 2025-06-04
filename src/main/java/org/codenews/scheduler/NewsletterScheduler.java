@@ -1,3 +1,4 @@
+// src/main/java/org/codenews/scheduler/NewsletterScheduler.java
 package org.codenews.scheduler;
 
 import jakarta.annotation.PostConstruct;
@@ -14,10 +15,6 @@ public class NewsletterScheduler {
 
     private final PipelineService pipelineService;
 
-    /**
-     * Ao subir a aplicação, dispara o pipeline uma vez imediatamente
-     * (que vai apenas publicar no Kafka).
-     */
     @PostConstruct
     public void onStartup() {
         log.info("[SCHEDULER] Aplicação iniciada. Disparando pipeline imediatamente...");
@@ -26,10 +23,9 @@ public class NewsletterScheduler {
     }
 
     /**
-     * Agendamento diário: executa todo dia às 08:00:00.
-     * (Somente publica no Kafka; quem envia e-mail é o consumidor.)
+     * Executa o pipeline todo dia no horário configurado (cron: "${scheduler.cron.daily}").
      */
-    @Scheduled(cron = "0 0 8 * * *", zone = "America/Sao_Paulo")
+    @Scheduled(cron = "${scheduler.cron.daily}", zone = "America/Sao_Paulo")
     public void scheduleDaily() {
         log.info("[SCHEDULER] Disparando pipeline agendado...");
         pipelineService.runPipeline();

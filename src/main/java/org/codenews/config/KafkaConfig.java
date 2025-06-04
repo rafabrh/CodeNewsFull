@@ -1,3 +1,4 @@
+// src/main/java/org/codenews/config/KafkaConfig.java
 package org.codenews.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -27,7 +28,7 @@ public class KafkaConfig {
     private String groupId;
 
     /**
-     * ProducerFactory para enviar objetos News como JSON.
+     * ProducerFactory visando enviar objetos News serializados como JSON.
      */
     @Bean
     public ProducerFactory<String, org.codenews.model.News> producerFactory() {
@@ -44,7 +45,8 @@ public class KafkaConfig {
     }
 
     /**
-     * ConsumerFactory para receber mensagens JSON → News.
+     * ConsumerFactory com JSON deserializer, e com auto.offset.reset = earliest
+     * para que o consumidor leia todas as mensagens pendentes ao iniciar.
      */
     @Bean
     public ConsumerFactory<String, org.codenews.model.News> consumerFactory() {
@@ -54,7 +56,10 @@ public class KafkaConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
-        // Informa ao JsonDeserializer qual pacote / classe será confiável
+        // Faz com que o consumidor leia do início caso não haja offset salvo
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+        // Informa ao JsonDeserializer quais pacotes/classes são confiáveis
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "org.codenews.model");
         props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "org.codenews.model.News");
 
@@ -66,7 +71,9 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, org.codenews.model.News> kafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, org.codenews.model.News>
+    kafkaListenerContainerFactory() {
+
         ConcurrentKafkaListenerContainerFactory<String, org.codenews.model.News> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());

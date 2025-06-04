@@ -1,3 +1,4 @@
+// src/main/java/org/codenews/scraper/NewsScraperService.java
 package org.codenews.scraper;
 
 import lombok.RequiredArgsConstructor;
@@ -17,10 +18,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Serviço de scraping/raspagem de notícias CanalTech usando o RSS oficial:
- *   https://feeds2.feedburner.com/canaltechbr
- */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -28,6 +25,10 @@ public class NewsScraperService {
 
     private final NewsRepository newsRepository;
 
+    /**
+     * 1) Recupera até 10 itens do RSS do CanalTech
+     * 2) Se falhar ou retornar vazio, faz fallback para as últimas 10 do banco
+     */
     public List<News> fetchTop10Latest() {
         log.info("[SCRAPER] Iniciando coleta de até 10 notícias via RSS CanalTech");
 
@@ -35,7 +36,6 @@ public class NewsScraperService {
         String rssUrl = "https://feeds2.feedburner.com/canaltechbr";
 
         try {
-            // 1) Abre conexão HTTP com o RSS
             URL url = new URL(rssUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -43,44 +43,32 @@ public class NewsScraperService {
             conn.setReadTimeout(10_000);
             InputStream stream = conn.getInputStream();
 
-            // 2) Parseia o XML via DocumentBuilder
             var factory = DocumentBuilderFactory.newInstance();
             var builder = factory.newDocumentBuilder();
             var docXml = builder.parse(stream);
-            org.w3c.dom.NodeList items = docXml.getElementsByTagName("item");
-
-            // 3) Monta um DateTimeFormatter para RFC-1123 (ex.: Tue, 02 Jun 2025 04:00:00 +0000)
+            var items = docXml.getElementsByTagName("item");
             DateTimeFormatter rfc1123 = DateTimeFormatter.RFC_1123_DATE_TIME;
 
-            // 4) Para cada <item> até coletar 10:
             for (int i = 0; i < items.getLength() && coletadas.size() < 10; i++) {
                 var node = items.item(i);
-                if (!(node instanceof org.w3c.dom.Element)) {
-                    continue;
-                }
-                org.w3c.dom.Element itemElem = (org.w3c.dom.Element) node;
+                if (!(node instanceof org.w3c.dom.Element)) continue;
+                var itemElem = (org.w3c.dom.Element) node;
 
                 String title      = getTagValue("title", itemElem).trim();
                 String link       = getTagValue("link", itemElem).trim();
                 String pubDateStr = getTagValue("pubDate", itemElem).trim();
+                if (title.isEmpty() || link.isEmpty() || pubDateStr.isEmpty()) continue;
 
-                if (title.isEmpty() || link.isEmpty() || pubDateStr.isEmpty()) {
-                    continue;
-                }
-
-                // Parse <pubDate> (UTC), depois converte para America/Sao_Paulo
                 ZonedDateTime zdt;
                 try {
                     zdt = ZonedDateTime.parse(pubDateStr, rfc1123);
                 } catch (Exception e) {
-                    // Se não conseguir parsear, assume agora UTC
                     zdt = ZonedDateTime.now(ZoneId.of("UTC"));
                 }
                 LocalDateTime publishDateTime = zdt
                         .withZoneSameInstant(ZoneId.of("America/Sao_Paulo"))
                         .toLocalDateTime();
 
-                // Extrai <description> (HTML) → summary + imagem dentro dela
                 String descHtml = getTagValue("description", itemElem);
                 String summary  = "";
                 String imageUrl = null;
@@ -93,7 +81,6 @@ public class NewsScraperService {
                     }
                 }
 
-                // Agora monta o objeto News
                 News news = new News();
                 news.setTitle(title);
                 news.setSummary(summary);
@@ -107,27 +94,21 @@ public class NewsScraperService {
             }
 
             log.info("[SCRAPER] RSS CanalTech retornou {} item(ns)", coletadas.size());
-
         } catch (Exception e) {
             log.error("[SCRAPER] Erro ao acessar RSS CanalTech: {}. Pulando coleta.", e.getMessage());
         }
 
-        // Se vier ao menos 1 item (até 10), devolve exatamente essa lista (pode vir < 10)
         if (!coletadas.isEmpty()) {
             return coletadas;
         }
-
-        // Se não trouxer nada do RSS (ou der erro), fazemos fallback para o BD
+        // Se não coletou nada do RSS, faz fallback para o BD
         log.warn("[SCRAPER] RSS vazio ou falhou. Fazendo fallback para últimas 10 do BD.");
         return fetchLast10FromDatabase();
     }
 
-    /**
-     * Retorna as últimas 10 notícias do BD, ordenadas por publishDate desc.
-     */
     private List<News> fetchLast10FromDatabase() {
         try {
-            List<News> ultimas10 = newsRepository.findTop10ByOrderByPublishDateDesc();
+            var ultimas10 = newsRepository.findTop10ByOrderByPublishDateDesc();
             log.info("[SCRAPER-FALLBACK] Retornando últimas {} notícias do BD.", ultimas10.size());
             return ultimas10;
         } catch (Exception e) {
@@ -136,10 +117,6 @@ public class NewsScraperService {
         }
     }
 
-    /**
-     * Pega o conteúdo textual do primeiro elemento <tag> dentro de itemElem,
-     * ou string vazia se não existir.
-     */
     private String getTagValue(String tag, org.w3c.dom.Element element) {
         var nl = element.getElementsByTagName(tag);
         if (nl.getLength() == 0) {

@@ -1,3 +1,4 @@
+// src/main/java/org/codenews/service/NewsProducerService.java
 package org.codenews.service;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class NewsProducerService {
      * 1) Coleta até 10 notícias via scraper (RSS)
      * 2) Persiste apenas URLs novas
      * 3) Publica todo o lote no Kafka (novas + duplicatas)
-     * 4) Envia um “marker de flush” ao final para sinalizar que o lote terminou
+     * 4) Publica um “marker de flush” ao final para sinalizar fim de lote
      */
     public void executeDailyProducerPipeline() {
         log.info("[NEWS_PRODUCER] Solicitando até 10 notícias recentes ao Scraper...");
@@ -51,12 +52,13 @@ public class NewsProducerService {
 
         // 3) Publica o “marker de flush” para que o consumidor saiba que terminou o lote
         News flushMarker = new News();
-        flushMarker.setUrl("FLUSH"); // maracador único
+        flushMarker.setUrl("FLUSH"); // marcador único
         flushMarker.setTitle("");
         flushMarker.setSummary("");
         flushMarker.setImageUrl(null);
         flushMarker.setSource("SYSTEM");
         flushMarker.setPublishDate(LocalDateTime.now());
+
         kafkaTemplate.send(TOPIC, "FLUSH", flushMarker)
                 .whenComplete((result, ex) -> {
                     if (ex != null) {

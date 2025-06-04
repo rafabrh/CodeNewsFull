@@ -28,6 +28,7 @@ spring:
           starttls:
             enable: true
         debug: true
+
   kafka:
     bootstrap-servers: localhost:9092
     topic:
@@ -56,6 +57,7 @@ spring:
     newsletter:
       batch:
         size: 10
+
 scheduler:
   cron:
-    daily: 0 0 8 * * *
+    daily: 0 47 23 * * *

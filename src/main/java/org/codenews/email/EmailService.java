@@ -1,3 +1,4 @@
+// src/main/java/org/codenews/service/EmailService.java
 package org.codenews.service;
 
 import jakarta.mail.internet.MimeMessage;
@@ -21,107 +22,95 @@ public class EmailService {
     private final JavaMailSender mailSender;
 
     /**
-     * Constrói o HTML completo da newsletter a partir de uma lista de notícias.
-     */
-    /**
-     * Constrói o HTML completo da newsletter a partir de uma lista de notícias,
-     * incluindo banner, notícias e seção de parcerias profissional.
+     * Constrói todo o HTML da newsletter, iterando sobre a lista de notícias
+     * e incluindo seções de parcerias, rodapé com unsubscribe etc.
      */
     private String buildNewsletterHtml(List<News> newsList) {
         StringBuilder sb = new StringBuilder();
 
         // Container geral (fundo cinza-claro) e centralização
-        sb.append("<div style=\"font-family:Arial, sans-serif; background:#f6f8fc; padding:0; margin:0; text-align:center;\">");
-        sb.append("  <div style=\"max-width:600px; margin:32px auto; background:white; border-radius:16px; ")
+        sb.append("<div style=\"font-family:Arial, sans-serif; background:#f6f8fc; padding:0; margin:0; text-align:center;\">")
+                .append("<div style=\"max-width:600px; margin:32px auto; background:white; border-radius:16px; ")
                 .append("box-shadow:0 4px 16px rgba(0,0,0,0.05); padding:32px;\">");
 
-        // Banner principal (link corrigido para imagem direta do Imgur)
-        sb.append("    <img src=\"https://i.imgur.com/Jf4DhGG.png\" alt=\"CodeNews Banner\" ")
+        // Banner principal (link direto do Imgur)
+        sb.append("<img src=\"https://i.imgur.com/Jf4DhGG.png\" alt=\"CodeNews Banner\" ")
                 .append("style=\"width:100%; border-radius:12px; margin-bottom:16px; display:block;\"/>");
 
-        // Cabeçalho
-        sb.append("    <h1 style=\"font-size:1.9em; color:#7048e8; margin-bottom:4px;\">")
-                .append("🚀 <span style=\"font-family:Montserrat, sans-serif;\">CodeNews</span>")
-                .append("</h1>");
-        sb.append("    <p style=\"color:#4d4d4d; font-size:1.1em; margin:8px 0 18px 0;\">")
+        // Cabeçalho da newsletter
+        sb.append("<h1 style=\"font-size:1.9em; color:#7048e8; margin-bottom:4px;\">")
+                .append("🚀 <span style=\"font-family:Montserrat, sans-serif;\">CodeNews</span></h1>");
+        sb.append("<p style=\"color:#4d4d4d; font-size:1.1em; margin:8px 0 18px 0;\">")
                 .append("Sua dose diária de inovação, tendências e o melhor do universo dev, direto na sua caixa de entrada.")
                 .append("</p>");
-        sb.append("    <p style=\"color:#23a455; font-weight:bold; margin-bottom:20px;\">")
+        sb.append("<p style=\"color:#23a455; font-weight:bold; margin-bottom:20px;\">")
                 .append("🔥 Você mantém sua streak de leitura ativa!")
                 .append("</p>");
 
-        // Mini-sumário / Destaque
-        sb.append("    <div style=\"padding:16px; background:#f0f2f6; border-radius:12px; margin-bottom:24px;\">");
-        sb.append("      <span style=\"font-weight:bold; letter-spacing:.5px; color:#333; font-size:1.2em;\">")
+        // Mini-sumário / Destaque do bloco de notícias
+        sb.append("<div style=\"padding:16px; background:#f0f2f6; border-radius:12px; margin-bottom:24px;\">")
+                .append("<span style=\"font-weight:bold; letter-spacing:.5px; color:#333; font-size:1.2em;\">")
                 .append("🌐 Principais Notícias de Tecnologia")
-                .append("</span>");
-        sb.append("    </div>");
+                .append("</span></div>");
 
-        // Listagem de notícias
+        // Listagem iterativa de cada notícia
         for (News news : newsList) {
-            sb.append("    <div style=\"margin-bottom:24px; border-bottom:1px solid #eee; padding-bottom:24px; text-align:left;\">");
+            sb.append("<div style=\"margin-bottom:24px; border-bottom:1px solid #eee; padding-bottom:24px; text-align:left;\">");
 
             // Imagem (se houver) ou placeholder cinza
             if (news.getImageUrl() != null && !news.getImageUrl().isEmpty()) {
-                sb.append("      <img src=\"")
+                sb.append("<img src=\"")
                         .append(news.getImageUrl())
                         .append("\" alt=\"Imagem da notícia\" style=\"width:100%; max-height:200px; object-fit:cover; border-radius:8px; margin-bottom:12px;\"/>");
             } else {
-                sb.append("      <div style=\"width:100%; height:200px; border-radius:8px; background:#ececec; ")
+                sb.append("<div style=\"width:100%; height:200px; border-radius:8px; background:#ececec; ")
                         .append("display:flex; align-items:center; justify-content:center; font-size:14px; color:#999; margin-bottom:12px;\">")
                         .append("Sem imagem")
                         .append("</div>");
             }
 
-            // Título (com link)
-            sb.append("      <h2 style=\"font-family:Montserrat, sans-serif; font-size:1.3em; color:#7048e8; margin:0 0 8px 0;\">")
-                    .append("<a href=\"").append(news.getUrl())
-                    .append("\" style=\"text-decoration:none; color:#7048e8;\" target=\"_blank\">")
+            // Título (com link clicável)
+            sb.append("<h2 style=\"font-family:Montserrat, sans-serif; font-size:1.3em; color:#7048e8; margin:0 0 8px 0;\">")
+                    .append("<a href=\"").append(news.getUrl()).append("\" style=\"text-decoration:none; color:#7048e8;\" target=\"_blank\">")
                     .append(news.getTitle())
-                    .append("</a>")
-                    .append("</h2>");
+                    .append("</a></h2>");
 
-            // Fonte e data
-            sb.append("      <p style=\"color:#888; font-size:0.95em; margin:0 0 12px 0;\">")
+            // Fonte e data de publicação
+            sb.append("<p style=\"color:#888; font-size:0.95em; margin:0 0 12px 0;\">")
                     .append("<b>").append(news.getSource()).append("</b> &middot; ")
                     .append(news.getPublishDate().toLocalDate())
                     .append("</p>");
 
-            // Resumo (até o primeiro ponto final)
+            // Resumo: até o primeiro ponto final
             String fullSummary = news.getSummary() != null ? news.getSummary().trim() : "";
             String shortSummary = "";
             if (!fullSummary.isEmpty()) {
                 int pos = fullSummary.indexOf(".");
-                if (pos > 0) {
-                    shortSummary = fullSummary.substring(0, pos + 1).trim();
-                } else {
-                    shortSummary = fullSummary;
-                }
+                shortSummary = pos > 0
+                        ? fullSummary.substring(0, pos + 1).trim()
+                        : fullSummary;
             }
             if (!shortSummary.isEmpty()) {
-                sb.append("      <p style=\"color:#333; font-size:1em; line-height:1.5; margin:0 0 12px 0;\">")
+                sb.append("<p style=\"color:#333; font-size:1em; line-height:1.5; margin:0 0 12px 0;\">")
                         .append(shortSummary)
                         .append("</p>");
             }
 
             // Botão “Ler matéria”
-            sb.append("      <div style=\"text-align:center; margin-top:12px;\">")
+            sb.append("<div style=\"text-align:center; margin-top:12px;\">")
                     .append("<a href=\"").append(news.getUrl())
                     .append("\" style=\"display:inline-block; padding:8px 24px; border-radius:8px; background:#7048e8; ")
                     .append("color:#fff; font-weight:bold; font-size:0.96em; text-decoration:none; transition:all .2s;\" ")
                     .append("target=\"_blank\">Ler matéria</a>")
                     .append("</div>");
 
-            sb.append("    </div>");
+            sb.append("</div>");
         }
 
-        // === Seção de Parcerias / Mídia Kit (reformulada para parecer mais profissional) ===
-        sb.append("    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; padding:0; margin:0;\">");
-
-        // Container principal da caixa de parcerias
-        sb.append("      <tr>");
-        sb.append("        <td align=\"center\" style=\"padding:0 16px;\">");
-        sb.append("          <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"")
+        // === Seção de Parcerias / Mídia Kit ===
+        sb.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; padding:0; margin:0;\">");
+        sb.append("<tr><td align=\"center\" style=\"padding:0 16px;\">");
+        sb.append("<table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"")
                 .append("background-color:#f9f9f9;")
                 .append("border:2px dashed #23a455;")
                 .append("border-radius:12px;")
@@ -130,178 +119,78 @@ public class EmailService {
                 .append("\">");
 
         // Título do bloco de parcerias
-        sb.append("            <tr>");
-        sb.append("              <td align=\"center\" style=\"padding-bottom:16px;\">");
-        sb.append("                <span style=\"")
-                .append("font-family:Montserrat, sans-serif;")
-                .append("font-size:1.4em;")
-                .append("color:#006622;")
-                .append("font-weight:bold;")
-                .append("\">")
+        sb.append("<tr><td align=\"center\" style=\"padding-bottom:16px;\">")
+                .append("<span style=\"font-family:Montserrat, sans-serif; font-size:1.4em; color:#006622; font-weight:bold;\">")
                 .append("🚀 Espaço Premium para Parcerias Tech!")
-                .append("</span>");
-        sb.append("              </td>");
-        sb.append("            </tr>");
+                .append("</span></td></tr>");
 
         // Alcance estimado
-        sb.append("            <tr>");
-        sb.append("              <td align=\"center\" style=\"padding-bottom:12px;\">");
-        sb.append("                <span style=\"")
-                .append("font-size:1em;")
-                .append("color:#23a455;")
-                .append("font-weight:bold;")
-                .append("\">")
+        sb.append("<tr><td align=\"center\" style=\"padding-bottom:12px;\">")
+                .append("<span style=\"font-size:1em; color:#23a455; font-weight:bold;\">")
                 .append("Alcance mensal estimado: +2.000 devs, gestores e decisores tech do Brasil")
-                .append("</span>");
-        sb.append("              </td>");
-        sb.append("            </tr>");
+                .append("</span></td></tr>");
 
-        // Perfil do público e formatos aceitos
-        sb.append("            <tr>");
-        sb.append("              <td align=\"center\" style=\"padding-bottom:16px;\">");
-        sb.append("                <span style=\"")
-                .append("font-size:0.95em;")
-                .append("color:#333333;")
-                .append("line-height:1.5;")
-                .append("\">")
+        // Público e formatos aceitos
+        sb.append("<tr><td align=\"center\" style=\"padding-bottom:16px;\">")
+                .append("<span style=\"font-size:0.95em; color:#333333; line-height:1.5;\">")
                 .append("Perfil do público: tecnologia, inovação, startups, SaaS, produto digital, mercado financeiro.")
-                .append("</span><br>");
-        sb.append("                <span style=\"")
-                .append("font-size:0.95em;")
-                .append("color:#333333;")
-                .append("line-height:1.5;")
-                .append("\">")
-                .append("Formatos aceitos: ")
-                .append("<span style=\"color:#006622; font-weight:bold;\">")
+                .append("</span><br>")
+                .append("<span style=\"font-size:0.95em; color:#333333; line-height:1.5;\">")
+                .append("Formatos aceitos: <span style=\"color:#006622; font-weight:bold;\">")
                 .append("banner, cupom, branded content, divulgação de eventos, cursos, produtos digitais e lançamentos.")
-                .append("</span>")
-                .append("</span>");
-        sb.append("              </td>");
-        sb.append("            </tr>");
+                .append("</span></span></td></tr>");
 
         // Chamada “Aqui sua marca pode aparecer!”
-        sb.append("            <tr>");
-        sb.append("              <td align=\"center\" style=\"padding-bottom:16px;\">");
-        sb.append("                <span style=\"")
-                .append("font-size:1em;")
-                .append("color:#23a455;")
-                .append("font-weight:bold;")
-                .append("\">")
+        sb.append("<tr><td align=\"center\" style=\"padding-bottom:16px;\">")
+                .append("<span style=\"font-size:1em; color:#23a455; font-weight:bold;\">")
                 .append("Aqui sua marca pode aparecer! 📢")
-                .append("</span>");
-        sb.append("              </td>");
-        sb.append("            </tr>");
+                .append("</span></td></tr>");
 
-        // Descrição “Seja parceiro do CodeNews…”
-        sb.append("            <tr>");
-        sb.append("              <td align=\"center\" style=\"padding-bottom:16px;\">");
-        sb.append("                <span style=\"")
-                .append("font-size:0.95em;")
-                .append("color:#333333;")
-                .append("line-height:1.5;")
-                .append("\">")
+        // Texto de convite a parceiros
+        sb.append("<tr><td align=\"center\" style=\"padding-bottom:16px;\">")
+                .append("<span style=\"font-size:0.95em; color:#333333; line-height:1.5;\">")
                 .append("Seja parceiro do CodeNews e posicione sua empresa, plataforma, fintech ou edtech neste espaço estratégico.")
-                .append("</span>");
-        sb.append("              </td>");
-        sb.append("            </tr>");
+                .append("</span></td></tr>");
 
         // Botão “Solicite o media kit”
-        sb.append("            <tr>");
-        sb.append("              <td align=\"center\">");
-        sb.append("                <a href=\"https://codenews.com.br/midia-kit\" target=\"_blank\" style=\"")
-                .append("display:inline-block;")
-                .append("background-color:#23a455;")
-                .append("color:#ffffff;")
-                .append("font-family:Montserrat, sans-serif;")
-                .append("font-size:1em;")
-                .append("font-weight:bold;")
-                .append("text-decoration:none;")
-                .append("padding:12px 28px;")
-                .append("border-radius:8px;")
+        sb.append("<tr><td align=\"center\">")
+                .append("<a href=\"https://codenews.com.br/midia-kit\" target=\"_blank\" style=\"")
+                .append("display:inline-block; background-color:#23a455; color:#ffffff; font-family:Montserrat, sans-serif;")
+                .append("font-size:1em; font-weight:bold; text-decoration:none; padding:12px 28px; border-radius:8px;")
                 .append("transition: background-color 0.2s ease-in-out;")
-                .append("\">")
-                .append("Solicite o media kit")
-                .append("</a>");
-        sb.append("              </td>");
-        sb.append("            </tr>");
+                .append("\">Solicite o media kit</a>")
+                .append("</td></tr>");
 
-        sb.append("          </table>");
-        sb.append("        </td>");
-        sb.append("      </tr>");
+        sb.append("</table></td></tr>");
 
-        // Bloco de “Indique a edição” em destaque (estilo caixa sólida)
-        sb.append("      <tr>");
-        sb.append("        <td align=\"center\" style=\"padding-top:24px; padding-bottom:24px;\">");
-        sb.append("          <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"")
-                .append("background-color:#1a237e;")
-                .append("border-radius:8px;")
-                .append("padding:12px 16px;")
-                .append("\">");
-        sb.append("            <tr>");
-        sb.append("              <td align=\"center\">");
-        sb.append("                <span style=\"")
-                .append("font-family:Montserrat, sans-serif;")
-                .append("font-size:1em;")
-                .append("color:#ffffff;")
-                .append("font-weight:bold;")
-                .append("\">")
+        // Bloco “Indique a edição” em destaque
+        sb.append("<tr><td align=\"center\" style=\"padding-top:24px; padding-bottom:24px;\">");
+        sb.append("<table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#1a237e; border-radius:8px; padding:12px 16px;\">");
+        sb.append("<tr><td align=\"center\">")
+                .append("<span style=\"font-family:Montserrat, sans-serif; font-size:1em; color:#ffffff; font-weight:bold;\">")
                 .append("🔥 Curtiu a edição? Indique CodeNews para seus amigos e ajude a crescer a comunidade tech!")
-                .append("</span>");
-        sb.append("              </td>");
-        sb.append("            </tr>");
-        sb.append("          </table>");
-        sb.append("        </td>");
-        sb.append("      </tr>");
+                .append("</span></td></tr>");
+        sb.append("</table></td></tr>");
 
         // Rodapé com assinatura, links e direitos autorais
-        sb.append("      <tr>");
-        sb.append("        <td align=\"center\" style=\"padding-bottom:32px;\">");
-        sb.append("          <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"padding-top:24px; border-top:1px solid #eeeeee;\">");
-        sb.append("            <tr>");
-        sb.append("              <td align=\"center\" style=\"font-family:Arial, sans-serif; color:#555555; font-size:0.9em; line-height:1.5;\">");
-        sb.append("                Newsletter idealizada, desenvolvida e mantida por ")
-                .append("<span style=\"color:#006622; font-weight:bold;\">Rafael Alvarenga Braghittoni</span>.")
-                .append("<br>");
-        sb.append("                <a href=\"https://www.linkedin.com/in/rafabrh/\" target=\"_blank\" style=\"")
-                .append("font-family:Montserrat, sans-serif;")
-                .append("font-size:0.9em;")
-                .append("color:#006622;")
-                .append("font-weight:bold;")
-                .append("text-decoration:none;")
-                .append("\">")
-                .append("Conecte-se comigo no LinkedIn")
-                .append("</a>")
-                .append("<br><br>");
-        sb.append("                Recebeu este e-mail por engano? ")
-                .append("<a href=\"https://codenews.com.br/unsubscribe\" style=\"color:#006622; text-decoration:none;\" target=\"_blank\">")
-                .append("Cancele a inscrição aqui")
-                .append("</a>")
-                .append("<br>");
-        sb.append("                © 2025 CodeNews &middot; ")
-                .append("<a href=\"https://codenews.com.br/privacidade\" style=\"color:#006622; text-decoration:none;\" target=\"_blank\">")
-                .append("Política de Privacidade")
-                .append("</a>")
-                .append(" &middot; ")
-                .append("<a href=\"https://codenews.com.br/contato\" style=\"color:#006622; text-decoration:none;\" target=\"_blank\">")
-                .append("Fale conosco")
-                .append("</a>");
-        sb.append("              </td>");
-        sb.append("            </tr>");
-        sb.append("          </table>");
-        sb.append("        </td>");
-        sb.append("      </tr>");
+        sb.append("<tr><td align=\"center\" style=\"padding-bottom:32px;\">");
+        sb.append("<table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"padding-top:24px; border-top:1px solid #eeeeee;\">");
+        sb.append("<tr><td align=\"center\" style=\"font-family:Arial, sans-serif; color:#555555; font-size:0.9em; line-height:1.5;\">")
+                .append("Newsletter idealizada, desenvolvida e mantida por <span style=\"color:#006622; font-weight:bold;\">Rafael Alvarenga Braghittoni</span>.<br>")
+                .append("<a href=\"https://www.linkedin.com/in/rafabrh/\" target=\"_blank\" style=\"font-family:Montserrat, sans-serif; font-size:0.9em; color:#006622; font-weight:bold; text-decoration:none;\">Conecte-se comigo no LinkedIn</a><br><br>")
+                .append("Recebeu este e-mail por engano? <a href=\"https://codenews.com.br/unsubscribe\" style=\"color:#006622; text-decoration:none;\" target=\"_blank\">Cancele a inscrição aqui</a><br>")
+                .append("© 2025 CodeNews &middot; <a href=\"https://codenews.com.br/privacidade\" style=\"color:#006622; text-decoration:none;\" target=\"_blank\">Política de Privacidade</a> &middot; <a href=\"https://codenews.com.br/contato\" style=\"color:#006622; text-decoration:none;\" target=\"_blank\">Fale conosco</a>")
+                .append("</td></tr>");
+        sb.append("</table></td></tr>");
 
-        sb.append("    </table>");
-
-        // Fecha container interno e externo
-        sb.append("  </div>");
-        sb.append("</div>");
+        sb.append("</table>");
+        sb.append("</div></div>");
 
         return sb.toString();
     }
 
     /**
-     * Envia o HTML para todos os subscribers cadastrados no BD.
+     * Envia a newsletter (HTML) para todos os assinantes cadastrados.
      */
     public void sendNewsletter(List<News> newsList) {
         List<Subscriber> subscribers = subscriberRepository.findAll();
