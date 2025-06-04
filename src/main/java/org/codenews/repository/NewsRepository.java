@@ -1,4 +1,3 @@
-// src/main/java/org/codenews/repository/NewsRepository.java
 package org.codenews.repository;
 
 import org.codenews.model.News;

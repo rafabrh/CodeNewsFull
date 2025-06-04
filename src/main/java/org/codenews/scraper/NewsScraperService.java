@@ -1,4 +1,3 @@
-// src/main/java/org/codenews/scraper/NewsScraperService.java
 package org.codenews.scraper;
 
 import lombok.RequiredArgsConstructor;
@@ -25,10 +24,6 @@ public class NewsScraperService {
 
     private final NewsRepository newsRepository;
 
-    /**
-     * 1) Recupera até 10 itens do RSS do CanalTech
-     * 2) Se falhar ou retornar vazio, faz fallback para as últimas 10 do banco
-     */
     public List<News> fetchTop10Latest() {
         log.info("[SCRAPER] Iniciando coleta de até 10 notícias via RSS CanalTech");
 
@@ -101,7 +96,6 @@ public class NewsScraperService {
         if (!coletadas.isEmpty()) {
             return coletadas;
         }
-        // Se não coletou nada do RSS, faz fallback para o BD
         log.warn("[SCRAPER] RSS vazio ou falhou. Fazendo fallback para últimas 10 do BD.");
         return fetchLast10FromDatabase();
     }

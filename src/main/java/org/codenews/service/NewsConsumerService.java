@@ -1,4 +1,3 @@
-// src/main/java/org/codenews/service/NewsConsumerService.java
 package org.codenews.service;
 
 import lombok.RequiredArgsConstructor;
@@ -20,9 +19,6 @@ public class NewsConsumerService {
     private final EmailService emailService;
     private final NewsletterProperties newsletterProperties;
 
-    /**
-     * Buffer em memória para acumular antes de disparar o envio de newsletter.
-     */
     private final List<News> buffer = new ArrayList<>();
 
     @KafkaListener(

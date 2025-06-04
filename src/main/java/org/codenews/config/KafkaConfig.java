@@ -1,4 +1,3 @@
-// src/main/java/org/codenews/config/KafkaConfig.java
 package org.codenews.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -27,9 +26,6 @@ public class KafkaConfig {
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
 
-    /**
-     * ProducerFactory visando enviar objetos News serializados como JSON.
-     */
     @Bean
     public ProducerFactory<String, org.codenews.model.News> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -44,10 +40,6 @@ public class KafkaConfig {
         return new KafkaTemplate<>(producerFactory());
     }
 
-    /**
-     * ConsumerFactory com JSON deserializer, e com auto.offset.reset = earliest
-     * para que o consumidor leia todas as mensagens pendentes ao iniciar.
-     */
     @Bean
     public ConsumerFactory<String, org.codenews.model.News> consumerFactory() {
         Map<String, Object> props = new HashMap<>();

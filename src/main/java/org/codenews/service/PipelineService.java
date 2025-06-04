@@ -1,4 +1,3 @@
-// src/main/java/org/codenews/service/PipelineService.java
 package org.codenews.service;
 
 import lombok.RequiredArgsConstructor;

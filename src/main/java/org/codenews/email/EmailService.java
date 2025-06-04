@@ -1,4 +1,3 @@
-// src/main/java/org/codenews/service/EmailService.java
 package org.codenews.service;
 
 import jakarta.mail.internet.MimeMessage;
@@ -21,10 +20,6 @@ public class EmailService {
     private final SubscriberRepository subscriberRepository;
     private final JavaMailSender mailSender;
 
-    /**
-     * Constrói todo o HTML da newsletter, iterando sobre a lista de notícias
-     * e incluindo seções de parcerias, rodapé com unsubscribe etc.
-     */
     private String buildNewsletterHtml(List<News> newsList) {
         StringBuilder sb = new StringBuilder();
 

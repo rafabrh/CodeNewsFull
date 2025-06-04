@@ -1,4 +1,3 @@
-// src/main/java/org/codenews/scheduler/NewsletterScheduler.java
 package org.codenews.scheduler;
 
 import jakarta.annotation.PostConstruct;
@@ -22,9 +21,6 @@ public class NewsletterScheduler {
         log.info("[SCHEDULER] Pipeline inicial executado.");
     }
 
-    /**
-     * Executa o pipeline todo dia no horário configurado (cron: "${scheduler.cron.daily}").
-     */
     @Scheduled(cron = "${scheduler.cron.daily}", zone = "America/Sao_Paulo")
     public void scheduleDaily() {
         log.info("[SCHEDULER] Disparando pipeline agendado...");

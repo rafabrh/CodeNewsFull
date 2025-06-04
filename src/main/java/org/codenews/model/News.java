@@ -1,4 +1,3 @@
-// src/main/java/org/codenews/model/News.java
 package org.codenews.model;
 
 import jakarta.persistence.*;

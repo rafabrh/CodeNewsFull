@@ -1,4 +1,3 @@
-// src/main/java/org/codenews/CodeNewsApplication.java
 package org.codenews;
 
 import org.springframework.boot.SpringApplication;

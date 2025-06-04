@@ -1,4 +1,3 @@
-// src/main/java/org/codenews/controller/SubscriberController.java
 package org.codenews.controller;
 
 import lombok.RequiredArgsConstructor;
@@ -14,10 +13,6 @@ public class SubscriberController {
 
     private final SubscriberRepository repository;
 
-    /**
-     * POST /api/subscribe
-     * Cadastra um novo assinante (se o e-mail ainda não estiver cadastrado).
-     */
     @PostMapping
     public ResponseEntity<String> subscribe(@RequestBody Subscriber subscriber) {
         if (repository.existsByEmail(subscriber.getEmail())) {
@@ -27,10 +22,6 @@ public class SubscriberController {
         return ResponseEntity.ok("Cadastro realizado com sucesso!");
     }
 
-    /**
-     * DELETE /api/subscribe/{email}
-     * Remove um assinante pelo e-mail, caso queira parar de receber a newsletter.
-     */
     @DeleteMapping("/{email}")
     public ResponseEntity<String> unsubscribe(@PathVariable String email) {
         return repository.findAll().stream()
@@ -43,10 +34,6 @@ public class SubscriberController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    /**
-     * DELETE /api/subscribe/all
-     * Cancela a inscrição de todos os assinantes (útil para testes ou reset).
-     */
     @DeleteMapping("/all")
     public ResponseEntity<Void> deleteAllSubscribers() {
         repository.deleteAll();
