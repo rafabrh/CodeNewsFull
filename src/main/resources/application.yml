@@ -2,6 +2,15 @@ server:
   port: 8080
 
 spring:
+  mvc:
+    cors:
+      mappings:
+        /api/**:
+          allowed-origins: "http://localhost:8080"
+          allowed-methods: "*"
+          allowed-headers: "*"
+          allow-credentials: true
+
   datasource:
     url: jdbc:postgresql://localhost:5432/codenews
     username: postgres
@@ -60,4 +69,4 @@ spring:
 
 scheduler:
   cron:
-    daily: 0 47 23 * * *
+    daily: 0 00 12 * * *

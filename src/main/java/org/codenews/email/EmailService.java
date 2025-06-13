@@ -1,4 +1,4 @@
-package org.codenews.service;
+package org.codenews.email;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -189,7 +189,7 @@ public class EmailService {
      */
     public void sendNewsletter(List<News> newsList) {
         List<Subscriber> subscribers = subscriberRepository.findAll();
-        String subject = "CodeNews: Últimas Notícias de Tecnologia";
+        String subject = "CodeNews: Últimas Notícias de Tecnologia - Teste Schedulado das 12h";
         String htmlContent = buildNewsletterHtml(newsList);
 
         for (Subscriber subscriber : subscribers) {

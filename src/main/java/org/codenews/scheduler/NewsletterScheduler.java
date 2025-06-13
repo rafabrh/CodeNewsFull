@@ -14,12 +14,12 @@ public class NewsletterScheduler {
 
     private final PipelineService pipelineService;
 
-    @PostConstruct
-    public void onStartup() {
-        log.info("[SCHEDULER] Aplicação iniciada. Disparando pipeline imediatamente...");
-        pipelineService.runPipeline();
-        log.info("[SCHEDULER] Pipeline inicial executado.");
-    }
+//    @PostConstruct
+//    public void onStartup() {
+//        log.info("[SCHEDULER] Aplicação iniciada. Disparando pipeline imediatamente...");
+//        pipelineService.runPipeline();
+//        log.info("[SCHEDULER] Pipeline inicial executado.");
+//    }
 
     @Scheduled(cron = "${scheduler.cron.daily}", zone = "America/Sao_Paulo")
     public void scheduleDaily() {

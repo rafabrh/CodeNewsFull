@@ -3,6 +3,7 @@ package org.codenews.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.codenews.config.NewsletterProperties;
+import org.codenews.email.EmailService;
 import org.codenews.model.News;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.Scheduled;
