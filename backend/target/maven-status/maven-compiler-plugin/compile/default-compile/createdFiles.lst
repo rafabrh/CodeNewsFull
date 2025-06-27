@@ -21,6 +21,7 @@ org\codenews\model\Subscriber.class
 org\codenews\email\EmailService.class
 org\codenews\model\News.class
 org\codenews\service\MetricsService.class
+org\codenews\dto\ArticlesTotalResponse.class
 org\codenews\service\NewsConsumerService.class
 org\codenews\controller\SubscriberController.class
 org\codenews\metrics\EmailDeliveryMetrics$EmailDeliveryMetricsBuilder.class

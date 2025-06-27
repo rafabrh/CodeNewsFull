@@ -4,7 +4,44 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="38e4efa8-e05e-4bd5-a602-437d197f12a7" name="Changes" comment="" />
+    <list default="true" id="38e4efa8-e05e-4bd5-a602-437d197f12a7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/codenews-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/codenews-1.0.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/codenews-1.0.0.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/codenews-1.0.0.jar.original" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/CodeNewsFull" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/dashboard/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/globals.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Dashboard/EmailStatsChart.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Dashboard/OverviewCards.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Landing/ArticlesGrid.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Landing/FeaturesSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Landing/Footer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Landing/Header.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Landing/HeroSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Landing/NewsCarousel.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Landing/SocialProof.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Landing/Stats.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Landing/StatsSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Landing/SubscribeForm.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Shared/Button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/components/Shared/Toast.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/next-env.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/next.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/postcss.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/images/rafa.JPG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/videos/codenewscity.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/services/api.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/tailwind.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/tailwind.config.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/tsconfig.json" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,7 +55,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/frontend" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -46,6 +83,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Maven.codenews [clean].executor": "Run",
+    "Maven.codenews [package].executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
@@ -54,7 +93,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.CodeNewsApplication.executor": "Run",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "private-version",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/rafae/OneDrive/Área de Trabalho/Repository/codenews/frontend/public/images",
     "node.js.detected.package.eslint": "true",
@@ -62,7 +101,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "ts.external.directory.path": "C:\\Users\\rafae\\OneDrive\\Área de Trabalho\\Repository\\codenews\\frontend\\node_modules\\typescript\\lib",
@@ -113,7 +152,10 @@
       <updated>1750037668508</updated>
       <workItem from="1750037669779" duration="18059000" />
       <workItem from="1750095074408" duration="67117000" />
-      <workItem from="1750338585153" duration="52351000" />
+      <workItem from="1750338585153" duration="60673000" />
+      <workItem from="1750693145362" duration="8228000" />
+      <workItem from="1750882089633" duration="3526000" />
+      <workItem from="1751030195975" duration="1796000" />
     </task>
     <servers />
   </component>

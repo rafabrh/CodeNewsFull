@@ -18,6 +18,7 @@ C:\Users\rafae\OneDrive\Área de Trabalho\Repository\codenews\backend\src\main\j
 C:\Users\rafae\OneDrive\Área de Trabalho\Repository\codenews\backend\src\main\java\org\codenews\repository\NewsRepository.java
 C:\Users\rafae\OneDrive\Área de Trabalho\Repository\codenews\backend\src\main\java\org\codenews\model\Subscriber.java
 C:\Users\rafae\OneDrive\Área de Trabalho\Repository\codenews\backend\src\main\java\org\codenews\metrics\EmailDeliveryMetrics.java
+C:\Users\rafae\OneDrive\Área de Trabalho\Repository\codenews\backend\src\main\java\org\codenews\dto\ArticlesTotalResponse.java
 C:\Users\rafae\OneDrive\Área de Trabalho\Repository\codenews\backend\src\main\java\org\codenews\service\NewsProducerService.java
 C:\Users\rafae\OneDrive\Área de Trabalho\Repository\codenews\backend\src\main\java\org\codenews\controller\NewsController.java
 C:\Users\rafae\OneDrive\Área de Trabalho\Repository\codenews\backend\src\main\java\org\codenews\email\EmailService.java
