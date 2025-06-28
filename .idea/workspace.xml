@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="38e4efa8-e05e-4bd5-a602-437d197f12a7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/banner.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.yml" afterDir="false" />
     </list>
@@ -59,7 +60,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.CodeNewsApplication.executor": "Run",
+    "Spring Boot.CodeNewsApplication.executor": "Debug",
     "git-widget-placeholder": "private-version",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/rafae/OneDrive/Área de Trabalho/Repository/codenews/frontend/public/images",
@@ -98,6 +99,11 @@
   </component>
   <component name="RunManager">
     <configuration name="CodeNewsApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="SPRING_DATASOURCE_PASSWORD" value="abc123" />
+        <env name="SPRING_DATASOURCE_URL" value="jdbc:postgresql://localhost:5432/codenews" />
+        <env name="SPRING_DATASOURCE_USERNAME" value="postgres" />
+      </envs>
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="codenews" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="org.codenews.CodeNewsApplication" />
@@ -127,7 +133,7 @@
       <workItem from="1750338585153" duration="60673000" />
       <workItem from="1750693145362" duration="8228000" />
       <workItem from="1750882089633" duration="3526000" />
-      <workItem from="1751030195975" duration="8575000" />
+      <workItem from="1751030195975" duration="10678000" />
     </task>
     <servers />
   </component>
