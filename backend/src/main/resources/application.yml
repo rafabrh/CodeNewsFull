@@ -1,6 +1,4 @@
-# src/main/resources/application-prod.yml
 server:
-  # Render injeta a porta em PORT
   port: ${PORT:8080}
 
 spring:
@@ -8,21 +6,17 @@ spring:
     cors:
       mappings:
         /api/**:
-          # Defina FRONTEND_URL nas env vars (ex: https://meu-frontend.onrender.com)
           allowed-origins: "https://codenewsfront.netlify.app/"
           allowed-methods: "*"
           allowed-headers: "*"
           allow-credentials: true
 
   datasource:
-    # Render injeta DATABASE_URL no formato postgres://user:pass@host:port/db
-    # O Spring Boot consegue parsear se começar com "jdbc:postgresql://"
-    url: jdbc:${DATABASE_URL}
+    url: ${JDBC_DATABASE_URL}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      # Em produção, não faça auto-update no schema
       ddl-auto: validate
     show-sql: false
     properties:
