@@ -12,9 +12,9 @@ spring:
           allow-credentials: true
 
   datasource:
-    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
-    username: ${PGUSER}
-    password: ${PGPASSWORD}
+    url: jdbc:postgresql://localhost:5432/codenews
+    username: postgres
+    password: abc123
     driver-class-name: org.postgresql.Driver
 
   jpa:
