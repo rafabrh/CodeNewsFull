@@ -12,7 +12,7 @@ spring:
           allow-credentials: true
 
   datasource:
-    url: jdbc:${DATABASE_URL}
+    url: "${SPRING_DATASOURCE_URL}"
     driver-class-name: org.postgresql.Driver
 
   jpa:
