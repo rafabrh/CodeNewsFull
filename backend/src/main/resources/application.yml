@@ -15,9 +15,7 @@ spring:
 
   datasource:
     # Railway expõe DATABASE_URL (jdbc://user:pass@host:port/db)
-      url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
-      username: ${PGUSER}
-      password: ${PGPASSWORD}
+      url: jdbc:${DATABASE_URL}
       driver-class-name: org.postgresql.Driver
 
   jpa:
