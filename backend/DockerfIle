@@ -1,17 +1,13 @@
-Usa Java 17
 FROM eclipse-temurin:17-jdk
 
-Cria diretório da aplicação
 WORKDIR /app
 
-Copia tudo
 COPY . .
 
-Compila com Maven, ignorando testes
+RUN chmod +x mvnw
+
 RUN ./mvnw clean package -DskipTests
 
-Expõe a porta do Spring Boot
 EXPOSE 8080
 
-Roda o JAR gerado
 CMD ["java", "-jar", "target/codenews-1.0.0.jar"]
