@@ -1,26 +1,31 @@
 server:
-  port: 8080
+  # Railway define a porta via ENV var PORT
+  port: ${PORT:8080}
 
 spring:
   mvc:
     cors:
       mappings:
         /api/**:
-          allowed-origins: "http://localhost:3000"
+          # URL do front-end (ex: sua app Vercel). Defina FRONTEND_URL no Railway.
+          allowed-origins: "${FRONTEND_URL}"
           allowed-methods: "*"
           allowed-headers: "*"
           allow-credentials: true
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/codenews
-    username: postgres
-    password: abc123
+    # Railway expõe DATABASE_URL (jdbc://user:pass@host:port/db)
+    url: ${DATABASE_URL}
+    # Caso prefira separar:
+    # username: ${DATABASE_USERNAME}
+    # password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      # Em produção, não recriar esquema automaticamente
+      ddl-auto: validate
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -28,23 +33,24 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: rafinhalvarenga@gmail.com
-    password: nabj imtg sury vfcl
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
-        debug: true
+        debug: false
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     topic:
-      news: codenews-news
+      # Exemplo: defina KAFKA_TOPIC_NEWS ou use o padrão
+      news: ${KAFKA_TOPIC_NEWS:codenews-news}
 
     consumer:
-      group-id: codenews-group
+      group-id: ${KAFKA_CONSUMER_GROUP:codenews-group}
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
@@ -62,18 +68,19 @@ spring:
             default:
               type: org.codenews.model.News
 
-    # Tamanho de lote para newsletter (batch):
     newsletter:
       batch:
-        size: 10
+        size: ${NEWSLETTER_BATCH_SIZE:10}
 
 scheduler:
   cron:
-    daily: 0 20 04 * * *
+    # Se quiser alterar o horário, basta mudar esta ENV
+    daily: ${SCHEDULER_CRON_DAILY:0 20 04 * * *}
 
 app:
   scraper:
-    rss-url: "https://feeds2.feedburner.com/canaltechbr"
+    # URL do RSS — também pode vir de ENV
+    rss-url: ${SCRAPER_RSS_URL:https://feeds2.feedburner.com/canaltechbr}
   email:
     welcome:
-      subject: "Bem-vindo ao CodeNews!"
+      subject: ${EMAIL_WELCOME_SUBJECT:Bem-vindo ao CodeNews!}
