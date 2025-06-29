@@ -1,5 +1,6 @@
 package org.codenews.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +28,7 @@ public class News {
 
     private String imageUrl;
     private String source;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime publishDate;
 
     public News(String title, String summary, String url, String imageUrl, String source, LocalDateTime publishDate) {
