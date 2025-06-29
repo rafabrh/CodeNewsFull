@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableConfigurationProperties
 @EnableKafka
 @EnableScheduling
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "org.codenews")
 public class CodeNewsApplication {
     public static void main(String[] args) {
         SpringApplication.run(CodeNewsApplication.class, args);

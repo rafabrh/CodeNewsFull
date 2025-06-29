@@ -36,10 +36,16 @@ public class KafkaConfig {
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        configProps.put(ProducerConfig.ACKS_CONFIG, "all");
-        configProps.put(ProducerConfig.RETRIES_CONFIG, 3);
+
+        configProps.put("security.protocol", "SASL_SSL");
+        configProps.put("sasl.mechanism", "SCRAM-SHA-256");
+        configProps.put("sasl.jaas.config",
+                "org.apache.kafka.common.security.scram.ScramLoginModule required " +
+                        "username=\"codenews-app\" password=\"codenewsKafka2025!\";");
+
         return new DefaultKafkaProducerFactory<>(configProps);
     }
+
 
     @Bean
     public KafkaTemplate<String, News> kafkaTemplate() {
@@ -56,8 +62,17 @@ public class KafkaConfig {
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "org.codenews.model");
         props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, News.class);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+        // Segurança Redpanda
+        props.put("security.protocol", "SASL_SSL");
+        props.put("sasl.mechanism", "SCRAM-SHA-256");
+        props.put("sasl.jaas.config",
+                "org.apache.kafka.common.security.scram.ScramLoginModule required " +
+                        "username=\"codenews-app\" password=\"codenewsKafka2025!\";");
+
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(News.class));
     }
+
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, News> kafkaListenerContainerFactory() {

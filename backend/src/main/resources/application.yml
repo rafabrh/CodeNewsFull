@@ -2,6 +2,8 @@ server:
   port: ${PORT:8080}
 
 spring:
+#  profiles:
+#    active: local
   mvc:
     cors:
       mappings:
@@ -31,9 +33,14 @@ spring:
       mail.smtp.starttls.enable: true
 
   kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    bootstrap-servers: d1glerkdfulgj4bj265g.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
     topic:
-      news: ${KAFKA_TOPIC_NEWS:codenews-news}
+      news: codenews-news-v2
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: SCRAM-SHA-256
+      sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="codenews-app" password="codenewsKafka2025!";
+      ssl.endpoint.identification.algorithm: ""
     consumer:
       group-id: codenews-group
       auto-offset-reset: earliest
@@ -42,9 +49,6 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    properties:
-      spring.json.trusted.packages: org.codenews.model
-      spring.json.value.default.type: org.codenews.model.News
     # tamanho do batch para envio de newsletter
     newsletter:
       batch:

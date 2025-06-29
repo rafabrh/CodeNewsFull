@@ -12,9 +12,7 @@ spring:
           allow-credentials: true
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/codenews
-    username: postgres
-    password: abc123
+    url: jdbc:postgresql://dpg-d1g072emcj7s73c6u030-a.oregon-postgres.render.com:5432/codenews_db?user=codenews_db_user&password=8umUffeczsKPDe7Ikpv8hGjecS3HfLC8
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -39,28 +37,22 @@ spring:
         debug: true
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: d1glerkdfulgj4bj265g.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
     topic:
-      news: codenews-news
-
+      news: codenews-news-v2
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: SCRAM-SHA-256
+      sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="codenews-app" password="codenewsKafka2025!";
+      ssl.endpoint.identification.algorithm: ""
     consumer:
       group-id: codenews-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-
-    properties:
-      spring:
-        json:
-          trusted:
-            packages: org.codenews.model
-          value:
-            default:
-              type: org.codenews.model.News
 
     # Tamanho de lote para newsletter (batch):
     newsletter:
