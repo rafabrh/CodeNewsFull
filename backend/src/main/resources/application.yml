@@ -4,15 +4,6 @@ server:
 spring:
 #  profiles:
 #    active: local
-  mvc:
-    cors:
-      mappings:
-        /api/**:
-          allowed-origins: "*"
-          allowed-methods: "*"
-          allowed-headers: "*"
-          allow-credentials: true
-
   datasource:
     url: ${DATABASE_URL}
     driver-class-name: org.postgresql.Driver

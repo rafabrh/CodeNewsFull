@@ -14,10 +14,13 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*") // ou "*" se quiser permitir todas (não recomendado para produção)
+                        .allowedOrigins(
+                                "http://localhost:4200",
+                                "https://686196df4d787b0008090d96--codenewsfront.netlify.app"
+                        )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .allowCredentials(true); // Se estiver usando cookies/autenticação
+                        .allowCredentials(true);
             }
         };
     }
