@@ -48,7 +48,7 @@ spring:
 scheduler:
   cron:
     # executa todo dia às 04:20
-    daily: 0 40 08 * * *
+    daily: 0 0 12 * * *
 
 app:
   scraper:
